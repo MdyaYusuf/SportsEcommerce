@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Validations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SportsEcommerce.DataAccess\SportsEcommerce.DataAccess.csproj" />
+    <ProjectReference Include="..\SportsEcommerce.Models\SportsEcommerce.Models.csproj" />
+  </ItemGroup>
+
+</Project>

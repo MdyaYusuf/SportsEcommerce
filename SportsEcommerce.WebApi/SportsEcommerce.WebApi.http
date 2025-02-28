@@ -1,0 +1,6 @@
+@SportsEcommerce.WebApi_HostAddress = http://localhost:5110
+
+GET {{SportsEcommerce.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
