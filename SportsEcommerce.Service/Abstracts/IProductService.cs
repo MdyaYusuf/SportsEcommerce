@@ -1,4 +1,5 @@
 ﻿using Core.Responses;
+using Microsoft.EntityFrameworkCore.Query;
 using SportsEcommerce.Models.Dtos.Products.Requests;
 using SportsEcommerce.Models.Dtos.Products.Responses;
 using SportsEcommerce.Models.Entities;
@@ -8,7 +9,13 @@ namespace SportsEcommerce.Service.Abstracts;
 
 public interface IProductService
 {
-  Task<ReturnModel<List<ProductResponseDto>>> GetAllAsync(Expression<Func<Product, bool>>? predicate = null, bool withDeleted = false, bool enableTracking = false, CancellationToken cancellationToken = default);
+  Task<ReturnModel<List<ProductResponseDto>>> GetAllAsync(
+    bool enableTracking = false,
+    bool withDeleted = false,
+    Func<IQueryable<Product>, IIncludableQueryable<Product, object>>? include = null,
+    Expression<Func<Product, bool>>? predicate = null,
+    Func<IQueryable<Product>, IOrderedQueryable<Product>>? orderBy = null,
+    CancellationToken cancellationToken = default);
   Task<ReturnModel<ProductResponseDto?>> GetByIdAsync(Guid id);
   Task<ReturnModel<ProductResponseDto>> AddAsync(CreateProductRequest request);
   Task<ReturnModel<ProductResponseDto>> UpdateAsync(UpdateProductRequest request);

@@ -1,8 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.Extensions.DependencyInjection;
 using SportsEcommerce.Service.Abstracts;
 using SportsEcommerce.Service.Concretes;
 using SportsEcommerce.Service.Mappers;
 using SportsEcommerce.Service.Rules;
+using System.Reflection;
 
 namespace SportsEcommerce.Service.Extensions;
 
@@ -22,6 +25,8 @@ public static class ServiceDependencies
     services.AddScoped<IRoleService, RoleService>();
     services.AddScoped<IProductService, ProductService>();
     services.AddScoped<ICategoryService, CategoryService>();
+    services.AddFluentValidationAutoValidation();
+    services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
     return services;
   }

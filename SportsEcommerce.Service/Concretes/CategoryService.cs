@@ -1,5 +1,6 @@
 ﻿using Core.Abstractions;
 using Core.Responses;
+using Microsoft.EntityFrameworkCore.Query;
 using SportsEcommerce.DataAccess.Abstracts;
 using SportsEcommerce.Models.Dtos.Categories.Requests;
 using SportsEcommerce.Models.Dtos.Categories.Responses;
@@ -31,9 +32,22 @@ public class CategoryService(ICategoryRepository _categoryRepository, CategoryBu
     };
   }
 
-  public async Task<ReturnModel<List<CategoryResponseDto>>> GetAllAsync(Expression<Func<Category, bool>>? predicate = null, bool withDeleted = false, bool enableTracking = false, CancellationToken cancellationToken = default)
+  public async Task<ReturnModel<List<CategoryResponseDto>>> GetAllAsync(
+    bool enableTracking = false,
+    bool withDeleted = false,
+    Func<IQueryable<Category>, IIncludableQueryable<Category, object>>? include = null,
+    Expression<Func<Category, bool>>? predicate = null,
+    Func<IQueryable<Category>, IOrderedQueryable<Category>>? orderBy = null,
+    CancellationToken cancellationToken = default)
   {
-    List<Category> categories = await _categoryRepository.GetAllAsync();
+    List<Category> categories = await _categoryRepository.GetAllAsync(
+      enableTracking,
+      withDeleted,
+      include,
+      predicate,
+      orderBy,
+      cancellationToken);
+
     List<CategoryResponseDto> responseList = _mapper.ConvertToResponseList(categories);
 
     return new ReturnModel<List<CategoryResponseDto>>()

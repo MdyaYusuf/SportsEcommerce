@@ -1,5 +1,6 @@
 ﻿using Core.Abstractions;
 using Core.Responses;
+using Microsoft.EntityFrameworkCore.Query;
 using SportsEcommerce.DataAccess.Abstracts;
 using SportsEcommerce.Models.Dtos.Products.Requests;
 using SportsEcommerce.Models.Dtos.Products.Responses;
@@ -31,9 +32,22 @@ public class ProductService(IProductRepository _productRepository, ProductBusine
     };
   }
 
-  public async Task<ReturnModel<List<ProductResponseDto>>> GetAllAsync(Expression<Func<Product, bool>>? predicate, bool withDeleted = false, bool enableTracking = false, CancellationToken cancellationToken = default)
+  public async Task<ReturnModel<List<ProductResponseDto>>> GetAllAsync(
+    bool enableTracking = false,
+    bool withDeleted = false,
+    Func<IQueryable<Product>, IIncludableQueryable<Product, object>>? include = null,
+    Expression<Func<Product, bool>>? predicate = null,
+    Func<IQueryable<Product>, IOrderedQueryable<Product>>? orderBy = null,
+    CancellationToken cancellationToken = default)
   {
-    List<Product> products = await _productRepository.GetAllAsync();
+    List<Product> products = await _productRepository.GetAllAsync(
+      enableTracking,
+      withDeleted,
+      include,
+      predicate,
+      orderBy,
+      cancellationToken);
+
     List<ProductResponseDto> responseList = _mapper.ConvertToResponseList(products);
 
     return new ReturnModel<List<ProductResponseDto>>()
