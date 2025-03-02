@@ -75,25 +75,23 @@ public class ProductService(IProductRepository _productRepository, ProductBusine
     };
   }
 
-  public async Task<ReturnModel<ProductResponseDto>> RemoveAsync(Guid id)
+  public async Task<ReturnModel<NoData>> RemoveAsync(Guid id)
   {
     await _businessRules.IsProductExistAsync(id);
 
     Product product = await _productRepository.GetByIdAsync(id);
-    Product deletedProduct = await _productRepository.RemoveAsync(product);
+    _productRepository.Delete(product);
     await _unitOfWork.SaveChangesAsync();
-    ProductResponseDto response = _mapper.ConvertToResponse(deletedProduct);
 
-    return new ReturnModel<ProductResponseDto>()
+    return new ReturnModel<NoData>()
     {
       Success = true,
       Message = "Ürün başarılı bir şekilde silindi.",
-      Data = response,
       StatusCode = 200
     };
   }
 
-  public async Task<ReturnModel<ProductResponseDto>> UpdateAsync(UpdateProductRequest request)
+  public async Task<ReturnModel<NoData>> UpdateAsync(UpdateProductRequest request)
   {
     await _businessRules.IsProductExistAsync(request.Id);
 
@@ -107,15 +105,13 @@ public class ProductService(IProductRepository _productRepository, ProductBusine
     existingProduct.Stock = request.Stock;
     existingProduct.IsActive = request.IsActive;
 
-    Product updatedProduct = await _productRepository.UpdateAsync(existingProduct);
+    _productRepository.Update(existingProduct);
     await _unitOfWork.SaveChangesAsync();
-    ProductResponseDto response = _mapper.ConvertToResponse(updatedProduct);
 
-    return new ReturnModel<ProductResponseDto>()
+    return new ReturnModel<NoData>()
     {
       Success = true,
-      Message = "Ürün güncellendi.",
-      Data = response,
+      Message = "Ürün başarılı bir şekilde güncellendi.",
       StatusCode = 200
     };
   }

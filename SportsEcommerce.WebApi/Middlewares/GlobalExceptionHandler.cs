@@ -44,6 +44,5 @@ public class GlobalExceptionHandler : IExceptionHandler
     await httpContext.Response.WriteAsync(JsonSerializer.Serialize(Errors));
 
     return true;
-
   }
 }

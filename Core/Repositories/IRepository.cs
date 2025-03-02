@@ -15,6 +15,6 @@ public interface IRepository<TEntity, TId> where TEntity : Entity<TId>, new()
     CancellationToken cancellationToken = default);
   Task<TEntity?> GetByIdAsync(TId id);
   Task<TEntity> AddAsync(TEntity entity);
-  Task<TEntity?> RemoveAsync(TEntity entity);
-  Task<TEntity?> UpdateAsync(TEntity entity);
+  void Delete(TEntity entity);
+  void Update(TEntity entity);
 }

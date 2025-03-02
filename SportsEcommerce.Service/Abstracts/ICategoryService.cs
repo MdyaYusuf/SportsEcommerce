@@ -16,8 +16,8 @@ public interface ICategoryService
     Expression<Func<Category, bool>>? predicate = null,
     Func<IQueryable<Category>, IOrderedQueryable<Category>>? orderBy = null,
     CancellationToken cancellationToken = default);
-  Task<ReturnModel<CategoryResponseDto?>> GetByIdAsync(int id);
+  Task<ReturnModel<CategoryResponseDto>> GetByIdAsync(int id);
   Task<ReturnModel<CategoryResponseDto>> AddAsync(CreateCategoryRequest request);
-  Task<ReturnModel<CategoryResponseDto>> UpdateAsync(UpdateCategoryRequest request);
-  Task<ReturnModel<CategoryResponseDto>> RemoveAsync(int id);
+  Task<ReturnModel<NoData>> RemoveAsync(int id);
+  Task<ReturnModel<NoData>> UpdateAsync(UpdateCategoryRequest request);
 }

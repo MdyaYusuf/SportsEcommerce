@@ -75,25 +75,23 @@ public class CategoryService(ICategoryRepository _categoryRepository, CategoryBu
     };
   }
 
-  public async Task<ReturnModel<CategoryResponseDto>> RemoveAsync(int id)
+  public async Task<ReturnModel<NoData>> RemoveAsync(int id)
   {
     await _businessRules.IsCategoryExistAsync(id);
 
     Category category = await _categoryRepository.GetByIdAsync(id);
-    Category deletedCategory = await _categoryRepository.RemoveAsync(category);
+    _categoryRepository.Delete(category);
     await _unitOfWork.SaveChangesAsync();
-    CategoryResponseDto response = _mapper.ConvertToResponse(deletedCategory);
 
-    return new ReturnModel<CategoryResponseDto>()
+    return new ReturnModel<NoData>()
     {
       Success = true,
       Message = "Kategori başarılı bir şekilde silindi.",
-      Data = response,
       StatusCode = 200
     };
   }
 
-  public async Task<ReturnModel<CategoryResponseDto>> UpdateAsync(UpdateCategoryRequest request)
+  public async Task<ReturnModel<NoData>> UpdateAsync(UpdateCategoryRequest request)
   {
     await _businessRules.IsCategoryExistAsync(request.Id);
 
@@ -102,15 +100,13 @@ public class CategoryService(ICategoryRepository _categoryRepository, CategoryBu
     existingCategory.Id = request.Id;
     existingCategory.Name = request.Name;
 
-    Category updatedCategory = await _categoryRepository.UpdateAsync(existingCategory);
+    _categoryRepository.Update(existingCategory);
     await _unitOfWork.SaveChangesAsync();
-    CategoryResponseDto response = _mapper.ConvertToResponse(updatedCategory);
 
-    return new ReturnModel<CategoryResponseDto>()
+    return new ReturnModel<NoData>()
     {
       Success = true,
-      Message = "Kategori güncellendi.",
-      Data = response,
+      Message = "Kategori başarılı bir şekilde güncellendi.",
       StatusCode = 200
     };
   }

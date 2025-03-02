@@ -65,16 +65,14 @@ public class EfBaseRepository<TContext, TEntity, TId> : IRepository<TEntity, TId
     return entity;
   }
 
-  public async Task<TEntity?> UpdateAsync(TEntity entity)
+  public void Delete(TEntity entity)
+  {
+    _context.Set<TEntity>().Remove(entity);
+  }
+
+  public void Update(TEntity entity)
   {
     entity.UpdatedDate = DateTime.UtcNow;
     _context.Set<TEntity>().Update(entity);
-    return entity;
-  }
-
-  public async Task<TEntity?> RemoveAsync(TEntity entity)
-  {
-    _context.Set<TEntity>().Remove(entity);
-    return entity;
   }
 }
