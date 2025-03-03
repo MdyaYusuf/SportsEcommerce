@@ -12,12 +12,12 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     builder.Property(c => c.Id).HasColumnName("CategoryId");
     builder.Property(c => c.CreatedDate).HasColumnName("CreatedDate");
     builder.Property(c => c.UpdatedDate).HasColumnName("UpdatedDate");
-    builder.Property(c => c.Name).HasColumnName("CategoryName");
+    builder.Property(c => c.Name).HasColumnName("Name");
 
     builder
       .HasMany(c => c.Products)
       .WithOne(p => p.Category)
-      .HasForeignKey(c => c.CategoryId)
+      .HasForeignKey(p => p.CategoryId)
       .OnDelete(DeleteBehavior.NoAction);
   }
 }

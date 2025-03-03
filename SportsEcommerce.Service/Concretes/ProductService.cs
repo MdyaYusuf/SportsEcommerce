@@ -1,27 +1,26 @@
-﻿using Core.Abstractions;
+﻿using AutoMapper;
+using Core.Abstractions;
 using Core.Responses;
-using Microsoft.EntityFrameworkCore.Query;
 using SportsEcommerce.DataAccess.Abstracts;
 using SportsEcommerce.Models.Dtos.Products.Requests;
 using SportsEcommerce.Models.Dtos.Products.Responses;
 using SportsEcommerce.Models.Entities;
 using SportsEcommerce.Service.Abstracts;
-using SportsEcommerce.Service.Mappers;
 using SportsEcommerce.Service.Rules;
 using System.Linq.Expressions;
 
 namespace SportsEcommerce.Service.Concretes;
 
-public class ProductService(IProductRepository _productRepository, ProductBusinessRules _businessRules, ProductMapper _mapper, IUnitOfWork _unitOfWork) : IProductService
+public class ProductService(IProductRepository _productRepository, ProductBusinessRules _businessRules, IMapper _mapper, IUnitOfWork _unitOfWork) : IProductService
 {
   public async Task<ReturnModel<ProductResponseDto>> AddAsync(CreateProductRequest request)
   {
     await _businessRules.IsNameUnique(request.Name);
 
-    Product createdProduct = _mapper.ConvertToEntity(request);
+    Product createdProduct = _mapper.Map<Product>(request);
     await _productRepository.AddAsync(createdProduct);
     await _unitOfWork.SaveChangesAsync();
-    ProductResponseDto response = _mapper.ConvertToResponse(createdProduct);
+    ProductResponseDto response = _mapper.Map<ProductResponseDto>(createdProduct);
 
     return new ReturnModel<ProductResponseDto>()
     {
@@ -35,20 +34,18 @@ public class ProductService(IProductRepository _productRepository, ProductBusine
   public async Task<ReturnModel<List<ProductResponseDto>>> GetAllAsync(
     bool enableTracking = false,
     bool withDeleted = false,
-    Func<IQueryable<Product>, IIncludableQueryable<Product, object>>? include = null,
-    Expression<Func<Product, bool>>? predicate = null,
+    Expression<Func<Product, bool>>? filter = null,
     Func<IQueryable<Product>, IOrderedQueryable<Product>>? orderBy = null,
     CancellationToken cancellationToken = default)
   {
     List<Product> products = await _productRepository.GetAllAsync(
       enableTracking,
       withDeleted,
-      include,
-      predicate,
+      filter,
       orderBy,
       cancellationToken);
 
-    List<ProductResponseDto> responseList = _mapper.ConvertToResponseList(products);
+    List<ProductResponseDto> responseList = _mapper.Map<List<ProductResponseDto>>(products);
 
     return new ReturnModel<List<ProductResponseDto>>()
     {
@@ -64,7 +61,7 @@ public class ProductService(IProductRepository _productRepository, ProductBusine
     await _businessRules.IsProductExistAsync(id);
 
     Product product = await _productRepository.GetByIdAsync(id);
-    ProductResponseDto response = _mapper.ConvertToResponse(product);
+    ProductResponseDto response = _mapper.Map<ProductResponseDto>(product);
 
     return new ReturnModel<ProductResponseDto>()
     {

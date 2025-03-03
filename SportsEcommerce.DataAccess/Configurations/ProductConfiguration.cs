@@ -15,10 +15,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
     builder.Property(p => p.Name).HasColumnName("Name");
     builder.Property(p => p.Description).HasColumnName("Description");
     builder.Property(p => p.ImageUrl).HasColumnName("ImageUrl");
-    builder.Property(p => p.Price).HasColumnName("Price");
+    builder.Property(p => p.Price).HasColumnName("Price").HasPrecision(18, 2);
     builder.Property(p => p.Stock).HasColumnName("Stock");
     builder.Property(p => p.IsActive).HasColumnName("IsActive");
-    builder.Property(p => p.CategoryId).HasColumnName("Category_Id");
+    builder.Property(p => p.CategoryId).HasColumnName("CategoryId");
 
     builder
       .HasOne(p => p.Category)

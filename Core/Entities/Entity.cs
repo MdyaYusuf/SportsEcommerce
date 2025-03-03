@@ -4,10 +4,10 @@ public class Entity<TId>
 {
   protected Entity()
   {
-    
+    CreatedDate = DateTime.Now;
   }
 
-  public Entity(TId id)
+  public Entity(TId id) : this()
   {
     Id = id;
   }

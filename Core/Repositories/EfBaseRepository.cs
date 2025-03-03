@@ -1,6 +1,5 @@
 ﻿using Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
 namespace Core.Repositories;
@@ -18,8 +17,7 @@ public class EfBaseRepository<TContext, TEntity, TId> : IRepository<TEntity, TId
   public async Task<List<TEntity>> GetAllAsync(
     bool enableTracking = false,
     bool withDeleted = false,
-    Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
-    Expression<Func<TEntity, bool>>? predicate = null,
+    Expression<Func<TEntity, bool>>? filter = null,
     Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
     CancellationToken cancellationToken = default)
   {
@@ -35,14 +33,9 @@ public class EfBaseRepository<TContext, TEntity, TId> : IRepository<TEntity, TId
       query = query.IgnoreQueryFilters();
     }
 
-    if (include != null)
+    if (filter != null)
     {
-      query = include(query);
-    }
-
-    if (predicate != null)
-    {
-      query = query.Where(predicate);
+      query = query.Where(filter);
     }
 
     if (orderBy != null)
@@ -60,7 +53,7 @@ public class EfBaseRepository<TContext, TEntity, TId> : IRepository<TEntity, TId
 
   public async Task<TEntity> AddAsync(TEntity entity)
   {
-    entity.CreatedDate = DateTime.UtcNow;
+    entity.CreatedDate = DateTime.Now;
     await _context.Set<TEntity>().AddAsync(entity);
     return entity;
   }
@@ -72,7 +65,7 @@ public class EfBaseRepository<TContext, TEntity, TId> : IRepository<TEntity, TId
 
   public void Update(TEntity entity)
   {
-    entity.UpdatedDate = DateTime.UtcNow;
+    entity.UpdatedDate = DateTime.Now;
     _context.Set<TEntity>().Update(entity);
   }
 }
