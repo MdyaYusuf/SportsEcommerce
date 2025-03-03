@@ -15,7 +15,7 @@ public interface IProductService
     Func<IQueryable<Product>, IOrderedQueryable<Product>>? orderBy = null,
     CancellationToken cancellationToken = default);
   Task<ReturnModel<ProductResponseDto>> GetByIdAsync(Guid id);
-  Task<ReturnModel<ProductResponseDto>> AddAsync(CreateProductRequest request);
+  Task<ReturnModel<CreatedProductResponseDto>> AddAsync(CreateProductRequest request);
   Task<ReturnModel<NoData>> RemoveAsync(Guid id);
   Task<ReturnModel<NoData>> UpdateAsync(UpdateProductRequest request);
 }

@@ -17,6 +17,7 @@ public class MappingProfiles : Profile
 
     CreateMap<CreateProductRequest, Product>();
     CreateMap<UpdateProductRequest, Product>();
+    CreateMap<Product, CreatedProductResponseDto>();
     CreateMap<Product, ProductResponseDto>()
       .ForMember(prd => prd.Category, opt => opt.MapFrom(p => p.Category.Name));
   }

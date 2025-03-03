@@ -13,19 +13,19 @@ namespace SportsEcommerce.Service.Concretes;
 
 public class ProductService(IProductRepository _productRepository, ProductBusinessRules _businessRules, IMapper _mapper, IUnitOfWork _unitOfWork) : IProductService
 {
-  public async Task<ReturnModel<ProductResponseDto>> AddAsync(CreateProductRequest request)
+  public async Task<ReturnModel<CreatedProductResponseDto>> AddAsync(CreateProductRequest request)
   {
     await _businessRules.IsNameUnique(request.Name);
 
     Product createdProduct = _mapper.Map<Product>(request);
     await _productRepository.AddAsync(createdProduct);
     await _unitOfWork.SaveChangesAsync();
-    ProductResponseDto response = _mapper.Map<ProductResponseDto>(createdProduct);
+    CreatedProductResponseDto response = _mapper.Map<CreatedProductResponseDto>(createdProduct);
 
-    return new ReturnModel<ProductResponseDto>()
+    return new ReturnModel<CreatedProductResponseDto>()
     {
       Success = true,
-      Message = "Ürün eklendi.",
+      Message = "Ürün başarılı bir şekilde eklendi.",
       Data = response,
       StatusCode = 201
     };
@@ -101,6 +101,7 @@ public class ProductService(IProductRepository _productRepository, ProductBusine
     existingProduct.Price = request.Price;
     existingProduct.Stock = request.Stock;
     existingProduct.IsActive = request.IsActive;
+    existingProduct.CategoryId = request.CategoryId;
 
     _productRepository.Update(existingProduct);
     await _unitOfWork.SaveChangesAsync();

@@ -25,7 +25,7 @@ public class CategoryService(ICategoryRepository _categoryRepository, CategoryBu
     return new ReturnModel<CategoryResponseDto>()
     {
       Success = true,
-      Message = "Kategori eklendi.",
+      Message = "Kategori başarılı bir şekilde eklendi.",
       Data = response,
       StatusCode = 201
     };
