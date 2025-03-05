@@ -12,7 +12,7 @@ using SportsEcommerce.DataAccess.Contexts;
 namespace SportsEcommerce.DataAccess.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20250303013122_init")]
+    [Migration("20250303123438_init")]
     partial class init
     {
         /// <inheritdoc />

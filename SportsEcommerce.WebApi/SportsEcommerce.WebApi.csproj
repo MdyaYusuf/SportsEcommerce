@@ -25,4 +25,8 @@
     <ProjectReference Include="..\SportsEcommerce.Service\SportsEcommerce.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

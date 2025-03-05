@@ -10,6 +10,16 @@ using SportsEcommerce.Service.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+  options.AddPolicy("AllowMyOrigin", policy =>
+  {
+    policy.WithOrigins("http://localhost:50599")
+      .AllowAnyHeader()
+      .AllowAnyMethod();
+  });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -59,6 +69,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+app.UseCors("AllowMyOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();
