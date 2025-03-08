@@ -36,6 +36,18 @@ public class GlobalExceptionHandler : IExceptionHandler
       return true;
     }
 
+    if (exception.GetType() == typeof(AuthorizationException))
+    {
+      httpContext.Response.StatusCode = 401;
+      Errors.Success = false;
+      Errors.Message = exception.Message;
+      Errors.StatusCode = 401;
+
+      await httpContext.Response.WriteAsync(JsonSerializer.Serialize(Errors));
+
+      return true;
+    }
+
     httpContext.Response.StatusCode = 500;
     Errors.Success = false;
     Errors.Message = exception.Message;

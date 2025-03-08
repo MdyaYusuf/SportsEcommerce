@@ -2,24 +2,27 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { IProduct } from "../model/IProduct";
 import { CircularProgress, Divider, Grid2, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import requests from "../api/requests";
+import NotFound from "../errors/NotFound";
 
 export default function ProductDetailsPage() {
 
-  const { id } = useParams();
+  const { id } = useParams<{id: string}>();
   const [product, setProduct] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5110/api/Products/getbyid/${id}`)
-      .then(response => response.json())
-      .then(result => setProduct(result.data))
-      .catch(error => console.log(error))
-      .finally(() => setLoading(false));
+    if (id) {
+      requests.homePage.details(id)
+        .then(result => setProduct(result.data))
+        .catch(error => console.log(error))
+        .finally(() => setLoading(false));
+    } 
   }, [id]);
 
   if (loading) return <CircularProgress />
 
-  if (!product) return <h5>Product not found...</h5>
+  if (!product) return <NotFound />
 
   return (
     <Grid2 container spacing={2}>

@@ -70,14 +70,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseExceptionHandler(_ => { });
+
 app.UseStaticFiles();
 
 app.UseCors("AllowMyOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseExceptionHandler(_ => { });
 
 app.MapControllers();
 

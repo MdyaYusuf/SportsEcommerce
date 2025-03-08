@@ -29,7 +29,7 @@ public class AuthenticationService(IUserService _userService, IJwtService _jwtSe
     return new ReturnModel<TokenResponseDto>()
     {
       Data = tokenResponse,
-      Message = "Giriş başarılı.",
+      Message = "Kayıt başarılı.",
       StatusCode = 200,
       Success = true
     };

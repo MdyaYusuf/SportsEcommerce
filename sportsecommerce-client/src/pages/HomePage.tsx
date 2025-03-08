@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { IProduct } from "../model/IProduct";
 import ProductList from "../components/ProductList";
 import { CircularProgress } from "@mui/material";
+import requests from "../api/requests";
 
 export default function HomePage() {
 
@@ -9,8 +10,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5110/api/Products/getall")
-      .then(response => response.json())
+    requests.homePage.list()
       .then(result => setProducts(result.data))
       .catch(error => console.log(error))
       .finally(() => setLoading(false));
