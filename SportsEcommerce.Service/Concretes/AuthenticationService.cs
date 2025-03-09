@@ -10,7 +10,7 @@ public class AuthenticationService(IUserService _userService, IJwtService _jwtSe
   public async Task<ReturnModel<TokenResponseDto>> LoginAsync(LoginRequest request)
   {
     var user = await _userService.LoginAsync(request);
-    var tokenResponse = await _jwtService.CrreateJwtTokenAsync(user);
+    var tokenResponse = await _jwtService.CreateJwtTokenAsync(user);
 
     return new ReturnModel<TokenResponseDto>()
     {
@@ -24,7 +24,7 @@ public class AuthenticationService(IUserService _userService, IJwtService _jwtSe
   public async Task<ReturnModel<TokenResponseDto>> RegisterAsync(RegisterRequest request)
   {
     var user = await _userService.RegisterAsync(request);
-    var tokenResponse = await _jwtService.CrreateJwtTokenAsync(user);
+    var tokenResponse = await _jwtService.CreateJwtTokenAsync(user);
 
     return new ReturnModel<TokenResponseDto>()
     {

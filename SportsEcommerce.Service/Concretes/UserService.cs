@@ -78,7 +78,7 @@ public sealed class UserService : IUserService
 
     CheckForIdentityResult(result);
 
-    var addRole = await _userManager.AddToRoleAsync(user, "User");
+    var addRole = await _userManager.AddToRoleAsync(user, "user");
 
     CheckForIdentityResult(result);
 

@@ -20,7 +20,7 @@ public class JwtService : IJwtService
     _userManager = userManager;
   }
 
-  public async Task<TokenResponseDto> CrreateJwtTokenAsync(User user)
+  public async Task<TokenResponseDto> CreateJwtTokenAsync(User user)
   {
     var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.AccessTokenExpiration);
     var secretKey = SecurityKeyHelper.GetSecurityKey(_tokenOption.SecurityKey);

@@ -5,5 +5,5 @@ namespace SportsEcommerce.Service.Abstracts;
 
 public interface IJwtService
 {
-  Task<TokenResponseDto> CrreateJwtTokenAsync(User user);
+  Task<TokenResponseDto> CreateJwtTokenAsync(User user);
 }
