@@ -1,17 +1,14 @@
-﻿using Core.Entities;
+﻿namespace SportsEcommerce.Models.Entities;
 
-namespace SportsEcommerce.Models.Entities;
-
-public class CartItem : Entity<int>
+public class CartItem
 {
   public CartItem()
   {
 
   }
 
-  public int Quantity { get; set; }
-  public int CartId { get; set; }
-  public Cart Cart { get; set; } = null!;
   public Guid ProductId { get; set; }
-  public Product Product { get; set; } = null!;
+  public string ProductName { get; set; }
+  public decimal UnitPrice { get; set; }
+  public int Quantity { get; set; }
 }
