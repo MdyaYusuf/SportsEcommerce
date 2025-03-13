@@ -18,4 +18,5 @@ public interface IProductService
   Task<ReturnModel<CreatedProductResponseDto>> AddAsync(CreateProductRequest request);
   Task<ReturnModel<NoData>> RemoveAsync(Guid id);
   Task<ReturnModel<NoData>> UpdateAsync(UpdateProductRequest request);
+  Task ReduceStockAsync(Guid productId, int quantity);
 }

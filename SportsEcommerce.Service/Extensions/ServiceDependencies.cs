@@ -16,12 +16,14 @@ public static class ServiceDependencies
   public static IServiceCollection AddServiceDependencies(this IServiceCollection services)
   {
     services.AddAutoMapper(typeof(MappingProfiles));
+    services.AddScoped<OrderBusinessRules>();
     services.AddScoped<CartBusinessRules>();
     services.AddScoped<ProductBusinessRules>();
     services.AddScoped<CategoryBusinessRules>();
     services.AddScoped<UserBusinessRules>();
     services.AddScoped<RoleBusinessRules>();
     services.AddScoped<IUnitOfWork, UnitOfWork>();
+    services.AddScoped<IOrderService, OrderService>();
     services.AddScoped<ICartService, CartService>();
     services.AddScoped<IJwtService, JwtService>();
     services.AddScoped<IAuthenticationService, AuthenticationService>();

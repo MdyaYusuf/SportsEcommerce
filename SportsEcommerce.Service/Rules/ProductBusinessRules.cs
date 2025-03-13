@@ -1,5 +1,6 @@
 ﻿using Core.Exceptions;
 using SportsEcommerce.DataAccess.Abstracts;
+using SportsEcommerce.Models.Entities;
 
 namespace SportsEcommerce.Service.Rules;
 
@@ -22,6 +23,16 @@ public class ProductBusinessRules(IProductRepository _productRepository)
     if (product != null)
     {
       throw new BusinessException("Bu isim ile sistemimizde bir ürün zaten mevcut.");
+    }
+  }
+
+  public async Task CheckSufficientStockAsync(Guid productId, int requiredQuantity)
+  {
+    var product = await _productRepository.GetByIdAsync(productId);
+
+    if (product.Stock < requiredQuantity)
+    {
+      throw new BusinessException("Ürünün yeterli stoğu bulunmamaktadır.");
     }
   }
 }

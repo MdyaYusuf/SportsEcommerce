@@ -17,4 +17,13 @@ public class EfProductRepository : EfBaseRepository<BaseDbContext, Product, Guid
   {
     return await _context.Products.FirstOrDefaultAsync(p => p.Name == name);
   }
+
+  public async Task ReduceStockAsync(Guid productId, int quantity)
+  {
+    var product = await GetByIdAsync(productId);
+
+    product.Stock -= quantity;
+
+    Update(product);
+  }
 }

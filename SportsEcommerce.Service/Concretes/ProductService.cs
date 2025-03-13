@@ -113,4 +113,15 @@ public class ProductService(IProductRepository _productRepository, ProductBusine
       StatusCode = 200
     };
   }
+
+  public async Task ReduceStockAsync(Guid productId, int quantity)
+  {
+    await _businessRules.IsProductExistAsync(productId);
+
+    await _businessRules.CheckSufficientStockAsync(productId, quantity);
+
+    await _productRepository.ReduceStockAsync(productId, quantity);
+
+    await _unitOfWork.SaveChangesAsync();
+  }
 }

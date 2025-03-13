@@ -13,6 +13,7 @@ public static class DataAccessDependencies
   {
     services.AddScoped<IProductRepository, EfProductRepository>();
     services.AddScoped<ICategoryRepository, EfCategoryRepository>();
+    services.AddScoped<IOrderRepository, EfOrderRepository>();
     services.AddDbContext<BaseDbContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("SqlConnection")));
     return services;
   }

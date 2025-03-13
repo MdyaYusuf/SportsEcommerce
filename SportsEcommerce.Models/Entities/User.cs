@@ -13,4 +13,5 @@ public class User : IdentityUser
   public string LastName { get; set; } = default!;
   public string City { get; set; } = default!;
   public DateTime BirthDate { get; set; } = default!;
+  public ICollection<Order>? Orders { get; set; }
 }
