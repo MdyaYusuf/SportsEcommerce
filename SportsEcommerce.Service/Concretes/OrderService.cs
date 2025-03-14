@@ -14,7 +14,7 @@ namespace SportsEcommerce.Service.Concretes;
 
 public class OrderService(IOrderRepository _orderRepository, IUnitOfWork _unitOfWork, IMapper _mapper, OrderBusinessRules _businessRules, IProductService _productService) : IOrderService
 {
-  public async Task<ReturnModel<OrderResponseDto>> CreateOrderAsync(CreateOrderRequest request, Cart cart)
+  public async Task<ReturnModel<OrderResponseDto>> CreateOrderAsync(CreateOrderRequest request, Cart cart, string userId)
   {
     using (IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync())
     {
@@ -22,9 +22,10 @@ public class OrderService(IOrderRepository _orderRepository, IUnitOfWork _unitOf
       {
         var order = new Order()
         {
-          UserId = request.UserId,
+          UserId = userId,
           OrderDate = DateTime.Now,
           Total = cart.CartItems.Sum(item => item.UnitPrice * item.Quantity),
+          Adress = request.Adress,
           OrderDetails = JsonSerializer.Serialize(cart.CartItems)
         };
 

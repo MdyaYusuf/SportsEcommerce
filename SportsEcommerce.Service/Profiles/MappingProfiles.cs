@@ -27,6 +27,6 @@ public class MappingProfiles : Profile
     CreateMap<UpdateProductRequest, Product>();
     CreateMap<Product, CreatedProductResponseDto>();
     CreateMap<Product, ProductResponseDto>()
-      .ForMember(prd => prd.Category, opt => opt.MapFrom(p => p.Category.Name));
+      .ForMember(prd => prd.Category, opt => opt.MapFrom(p => p.Category.Name)).ReverseMap().ForMember(prd => prd.Category, opt => opt.Ignore());
   }
 }

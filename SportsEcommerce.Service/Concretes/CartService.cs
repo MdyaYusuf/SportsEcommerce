@@ -35,13 +35,22 @@ public class CartService(CartBusinessRules _businessRules) : ICartService
     }
   }
 
-  public void RemoveItem(Cart cart, Guid productId)
+  public void RemoveItem(Cart cart, Guid productId, int quantity)
   {
+    _businessRules.EnsureCartItemExists(cart, productId);
+
     var item = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
 
     if (item != null)
     {
-      cart.CartItems.Remove(item);
+      if (quantity >= item.Quantity)
+      {
+        cart.CartItems.Remove(item);
+      }
+      else
+      {
+        item.Quantity -= quantity;
+      }
     }
   }
 

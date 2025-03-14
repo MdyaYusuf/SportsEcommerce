@@ -7,6 +7,6 @@ namespace SportsEcommerce.Service.Abstracts;
 
 public interface IOrderService
 {
-  Task<ReturnModel<OrderResponseDto>> CreateOrderAsync(CreateOrderRequest request, Cart cart);
+  Task<ReturnModel<OrderResponseDto>> CreateOrderAsync(CreateOrderRequest request, Cart cart, string userId);
   Task<ReturnModel<OrderResponseDto>> GetOrderByIdAsync(int orderId);
 }

@@ -7,6 +7,7 @@ using SportsEcommerce.DataAccess.Contexts;
 using SportsEcommerce.DataAccess.Extensions;
 using SportsEcommerce.Models.Entities;
 using SportsEcommerce.Service.Extensions;
+using SportsEcommerce.WebApi.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,7 @@ builder.Services.AddServiceDependencies();
 
 builder.Services.AddScoped<DecoderService>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<CartSessionHelper>();
 
 builder.Services.Configure<TokenOption>(builder.Configuration.GetSection("TokenOption"));
 

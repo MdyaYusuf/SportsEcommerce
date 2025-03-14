@@ -36,7 +36,7 @@ public class CartController(ICartService _cartService, IProductService _productS
   public IActionResult RemoveItem([FromBody] RemoveCartItemRequest request)
   {
     var cart = _helper.GetCartFromSession();
-    _cartService.RemoveItem(cart, request.ProductId);
+    _cartService.RemoveItem(cart, request.ProductId, request.Quantity);
     _helper.SaveCartToSession(cart);
 
     return Ok(cart);
