@@ -57,4 +57,21 @@ public class OrderService(IOrderRepository _orderRepository, IUnitOfWork _unitOf
       }
     }
   }
+
+  public async Task<ReturnModel<OrderResponseDto>> GetOrderByIdAsync(int orderId)
+  {
+    await _businessRules.IsOrderExistAsync(orderId);
+
+    var order = await _orderRepository.GetOrderByIdAsync(orderId);
+
+    var response = _mapper.Map<OrderResponseDto>(order);
+
+    return new ReturnModel<OrderResponseDto>()
+    {
+      Success = true,
+      Message = "Sipariş başarıyla getirildi.",
+      Data = response,
+      StatusCode = 200
+    };
+  }
 }

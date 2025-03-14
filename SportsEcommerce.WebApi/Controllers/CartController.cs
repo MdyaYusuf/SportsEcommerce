@@ -3,20 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using SportsEcommerce.Models.Dtos.Carts.Requests;
 using SportsEcommerce.Models.Entities;
 using SportsEcommerce.Service.Abstracts;
-using System.Text.Json;
+using SportsEcommerce.WebApi.Helpers;
 
 namespace SportsEcommerce.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CartController(ICartService _cartService, IProductService _productService, IHttpContextAccessor _httpContextAccessor, IMapper _mapper) : ControllerBase
+public class CartController(ICartService _cartService, IProductService _productService, IMapper _mapper, CartSessionHelper _helper) : ControllerBase
 {
-  private const string SessionCartKey = "Cart";
-
   [HttpGet]
   public IActionResult GetCart()
   {
-    var cart = GetCartFromSession();
+    var cart = _helper.GetCartFromSession();
 
     return Ok(cart);
   }
@@ -27,9 +25,9 @@ public class CartController(ICartService _cartService, IProductService _productS
     var productResult = await _productService.GetByIdAsync(request.ProductId);
     var productEntity = _mapper.Map<Product>(productResult.Data);
 
-    var cart = GetCartFromSession();
+    var cart = _helper.GetCartFromSession();
     _cartService.AddItem(cart, productEntity, request.Quantity);
-    SaveCartToSession(cart);
+    _helper.SaveCartToSession(cart);
 
     return Ok(cart);
   }
@@ -37,9 +35,9 @@ public class CartController(ICartService _cartService, IProductService _productS
   [HttpPost("remove")]
   public IActionResult RemoveItem([FromBody] RemoveCartItemRequest request)
   {
-    var cart = GetCartFromSession();
+    var cart = _helper.GetCartFromSession();
     _cartService.RemoveItem(cart, request.ProductId);
-    SaveCartToSession(cart);
+    _helper.SaveCartToSession(cart);
 
     return Ok(cart);
   }
@@ -47,9 +45,9 @@ public class CartController(ICartService _cartService, IProductService _productS
   [HttpPost("clear")]
   public IActionResult ClearCart()
   {
-    var cart = GetCartFromSession();
+    var cart = _helper.GetCartFromSession();
     _cartService.ClearCart(cart);
-    SaveCartToSession(cart);
+    _helper.SaveCartToSession(cart);
 
     return Ok(cart);
   }
@@ -57,31 +55,9 @@ public class CartController(ICartService _cartService, IProductService _productS
   [HttpGet("total")]
   public IActionResult GetTotal()
   {
-    var cart = GetCartFromSession();
+    var cart = _helper.GetCartFromSession();
     var total = _cartService.GetTotal(cart);
 
     return Ok(total);
-  }
-
-  private Cart GetCartFromSession()
-  {
-    var session = _httpContextAccessor.HttpContext.Session;
-    var cartJson = session.GetString(SessionCartKey);
-
-    if (string.IsNullOrEmpty(cartJson))
-    {
-      var newCart = new Cart();
-      session.SetString(SessionCartKey, JsonSerializer.Serialize(newCart));
-
-      return newCart;
-    }
-
-    return JsonSerializer.Deserialize<Cart>(cartJson);
-  }
-
-  private void SaveCartToSession(Cart cart)
-  {
-    var session = _httpContextAccessor.HttpContext.Session;
-    session.SetString(SessionCartKey, JsonSerializer.Serialize(cart));
   }
 }

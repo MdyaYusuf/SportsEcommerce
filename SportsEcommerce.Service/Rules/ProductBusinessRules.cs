@@ -1,6 +1,5 @@
 ﻿using Core.Exceptions;
 using SportsEcommerce.DataAccess.Abstracts;
-using SportsEcommerce.Models.Entities;
 
 namespace SportsEcommerce.Service.Rules;
 

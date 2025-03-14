@@ -1,4 +1,5 @@
-﻿using SportsEcommerce.DataAccess.Abstracts;
+﻿using Microsoft.EntityFrameworkCore;
+using SportsEcommerce.DataAccess.Abstracts;
 using SportsEcommerce.DataAccess.Contexts;
 using SportsEcommerce.Models.Entities;
 
@@ -17,5 +18,10 @@ public class EfOrderRepository : IOrderRepository
     await _context.Orders.AddAsync(order);
 
     return order;
+  }
+
+  public async Task<Order?> GetOrderByIdAsync(int orderId)
+  {
+    return await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
   }
 }

@@ -10,8 +10,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
   {
     builder.ToTable("Orders").HasKey(o => o.Id);
     builder.Property(o => o.Id).HasColumnName("OrderId");
-    builder.Property(o => o.CreatedDate).HasColumnName("CreatedDate");
-    builder.Property(o => o.UpdatedDate).HasColumnName("UpdatedDate");
     builder.Property(o => o.OrderDate).HasColumnName("OrderDate");
     builder.Property(o => o.Total).HasColumnName("Total");
     builder.Property(o => o.OrderDetails).HasColumnName("OrderDetails");
