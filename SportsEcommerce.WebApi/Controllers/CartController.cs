@@ -20,7 +20,7 @@ public class CartController(ICartService _cartService, IProductService _productS
   }
 
   [HttpPost("add")]
-  public async Task<IActionResult> AddItemAsync([FromBody] AddCartItemRequest request)
+  public async Task<IActionResult> AddItemAsync([FromQuery] AddCartItemRequest request)
   {
     var productResult = await _productService.GetByIdAsync(request.ProductId);
     var productEntity = _mapper.Map<Product>(productResult.Data);
@@ -33,7 +33,7 @@ public class CartController(ICartService _cartService, IProductService _productS
   }
 
   [HttpPost("remove")]
-  public IActionResult RemoveItem([FromBody] RemoveCartItemRequest request)
+  public IActionResult RemoveItem([FromQuery] RemoveCartItemRequest request)
   {
     var cart = _helper.GetCartFromSession();
     _cartService.RemoveItem(cart, request.ProductId, request.Quantity);
@@ -50,14 +50,5 @@ public class CartController(ICartService _cartService, IProductService _productS
     _helper.SaveCartToSession(cart);
 
     return Ok(cart);
-  }
-
-  [HttpGet("total")]
-  public IActionResult GetTotal()
-  {
-    var cart = _helper.GetCartFromSession();
-    var total = _cartService.GetTotal(cart);
-
-    return Ok(total);
   }
 }

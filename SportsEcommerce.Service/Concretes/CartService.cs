@@ -58,9 +58,4 @@ public class CartService(CartBusinessRules _businessRules) : ICartService
   {
     cart.CartItems.Clear();
   }
-
-  public decimal GetTotal(Cart cart)
-  {
-    return cart.CartItems.Sum(ci => ci.UnitPrice * ci.Quantity);
-  }
 }

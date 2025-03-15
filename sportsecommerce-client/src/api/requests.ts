@@ -4,6 +4,7 @@ import { IApiError } from "../model/IApiError";
 import { router } from "../router/Routes";
 
 axios.defaults.baseURL = "http://localhost:5110/api/";
+axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(response => {
   return response;
@@ -47,8 +48,15 @@ const homePage = {
   details: (id: string) => queries.get(`Products/getbyid/${id}`)
 }
 
+const Cart = {
+  get: () => queries.get("cart"),
+  addItem: (productId: string, quantity: number = 1) => queries.post(`cart/add?productId=${productId}&quantity=${quantity}`, {}),
+  removeItem: (productId: string, quantity: number = 1) => queries.delete(`cart/remove?productId=${productId}&quantity=${quantity}`),
+  clearItems: () => queries.post("cart/clear", {})
+}
+
 const requests = {
-  homePage
+  homePage, Cart
 }
 
 export default requests
