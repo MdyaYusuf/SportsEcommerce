@@ -11,7 +11,7 @@ public class CartBusinessRules
 
     if (item == null)
     {
-      throw new BusinessException($"Silmek istediğiniz ürün sepette bulunmamaktadır.");
+      throw new BusinessException("Silmek istediğiniz ürün sepette bulunmamaktadır.");
     }
   }
   public void EnsureStockAvailable(Product product, int currentQuantity, int additionalQuantity)

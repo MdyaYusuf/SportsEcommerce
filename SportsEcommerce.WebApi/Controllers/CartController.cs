@@ -32,7 +32,7 @@ public class CartController(ICartService _cartService, IProductService _productS
     return Ok(cart);
   }
 
-  [HttpPost("remove")]
+  [HttpDelete("remove")]
   public IActionResult RemoveItem([FromQuery] RemoveCartItemRequest request)
   {
     var cart = _helper.GetCartFromSession();

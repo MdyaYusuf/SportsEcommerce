@@ -12,7 +12,7 @@ using SportsEcommerce.DataAccess.Contexts;
 namespace SportsEcommerce.DataAccess.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20250314153342_init")]
+    [Migration("20250316113436_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -209,6 +209,7 @@ namespace SportsEcommerce.DataAccess.Migrations
                         .HasColumnName("OrderDetails");
 
                     b.Property<decimal>("Total")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("Total");
 

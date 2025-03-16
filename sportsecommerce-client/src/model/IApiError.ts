@@ -1,6 +1,6 @@
 export interface IApiError
 {
-  success: boolean,
-  message: string,
-  statusCode: number
+  Success: boolean,
+  Message: string,
+  StatusCode: number
 }

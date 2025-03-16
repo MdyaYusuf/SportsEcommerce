@@ -10,7 +10,7 @@ export default function ServerError() {
       {
         state?.error ? (
             <Typography variant="h3" gutterBottom>
-              {state.error.message} - {state.error.statusCode}
+              {state.error.Message} - {state.error.StatusCode}
             </Typography>
         ) : (
             <Typography>

@@ -29,6 +29,7 @@ public class CartService(CartBusinessRules _businessRules) : ICartService
       {
         ProductId = product.Id,
         ProductName = product.Name,
+        ImageUrl = product.ImageUrl,
         UnitPrice = product.Price,
         Quantity = quantity
       });

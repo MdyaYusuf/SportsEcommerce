@@ -1,15 +1,35 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { IProduct } from "../model/IProduct";
-import { CircularProgress, Divider, Grid2, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Button, CircularProgress, Divider, Grid2, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import requests from "../api/requests";
 import NotFound from "../errors/NotFound";
+import { useCartContext } from "../contexts/CartContext";
+import { AddShoppingCart } from "@mui/icons-material";
+import { toast } from "react-toastify";
+import { currencyTRY } from "../utils/formatCurrency";
 
 export default function ProductDetailsPage() {
 
+  const { cart, setCart } = useCartContext();
   const { id } = useParams<{id: string}>();
   const [product, setProduct] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdded, setIsAdded] = useState(false);
+
+  const item = cart?.cartItems.find(ci => ci.productId == product?.id);
+
+  function handleAddItem(id: string) {
+    setIsAdded(true);
+
+    requests.Cart.addItem(id)
+      .then(cart => {
+        setCart(cart);
+        toast.success("Sepetinize eklendi.");
+      })
+      .catch(error => console.log(error))
+      .finally(() => setIsAdded(false));
+  }
 
   useEffect(() => {
     if (id) {
@@ -32,7 +52,7 @@ export default function ProductDetailsPage() {
       <Grid2 size={{ xl: 9, lg: 8, md: 7, sm: 6, xs: 12 }}>
         <Typography variant="h2">{product.name}</Typography>
         <Divider sx={{ mb: 2 }} />
-        <Typography variant="h3" color="secondary">{product.price} TL</Typography>
+        <Typography variant="h4" color="secondary">{currencyTRY.format(product.price)} TL</Typography>
         <TableContainer>
           <Table>
             <TableBody>
@@ -55,6 +75,14 @@ export default function ProductDetailsPage() {
             </TableBody>
           </Table>
         </TableContainer>
+        <Stack direction="row" spacing={2} sx={{ mt: 3 }} alignItems="center">
+          <Button variant="outlined" size="small" loadingPosition="start" startIcon={<AddShoppingCart />} color="success" loading={isAdded} onClick={() => handleAddItem(product.id)}>Add to Cart</Button>
+          {
+            (item?.quantity ?? 0) > 0 && (
+              <Typography variant="body2">Sepetinize {item?.quantity} adet eklendi.</Typography>
+            )
+          }
+        </Stack>
       </Grid2>
     </Grid2>
   );

@@ -11,7 +11,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
     builder.ToTable("Orders").HasKey(o => o.Id);
     builder.Property(o => o.Id).HasColumnName("OrderId");
     builder.Property(o => o.OrderDate).HasColumnName("OrderDate");
-    builder.Property(o => o.Total).HasColumnName("Total");
+    builder.Property(o => o.Total).HasColumnName("Total").HasPrecision(18, 2);
     builder.Property(o => o.Adress).HasColumnName("Adress");
     builder.Property(o => o.OrderDetails).HasColumnName("OrderDetails");
     builder.Property(o => o.UserId).HasColumnName("UserId");

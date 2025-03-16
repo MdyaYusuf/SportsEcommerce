@@ -15,7 +15,7 @@ axios.interceptors.response.use(response => {
   }
   const { data, status } = error.response as AxiosResponse;
   const apiError = data as IApiError;
-  const errorMessage = apiError?.message ?? "Bilinmeyen bir hata meydana geldi";
+  const errorMessage = apiError?.Message ?? "Bilinmeyen bir hata meydana geldi.";
   switch (status)
   {
     case 400:

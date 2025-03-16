@@ -206,6 +206,7 @@ namespace SportsEcommerce.DataAccess.Migrations
                         .HasColumnName("OrderDetails");
 
                     b.Property<decimal>("Total")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("Total");
 
