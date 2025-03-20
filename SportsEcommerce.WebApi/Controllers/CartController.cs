@@ -11,7 +11,7 @@ namespace SportsEcommerce.WebApi.Controllers;
 [ApiController]
 public class CartController(ICartService _cartService, IProductService _productService, IMapper _mapper, CartSessionHelper _helper) : ControllerBase
 {
-  [HttpGet]
+  [HttpGet("get")]
   public IActionResult GetCart()
   {
     var cart = _helper.GetCartFromSession();

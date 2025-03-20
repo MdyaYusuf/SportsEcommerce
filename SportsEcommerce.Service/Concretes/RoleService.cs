@@ -1,4 +1,4 @@
-﻿using Core.Exceptions;
+﻿using Core.Utils;
 using Microsoft.AspNetCore.Identity;
 using SportsEcommerce.Models.Dtos.Users.Requests;
 using SportsEcommerce.Models.Entities;
@@ -29,11 +29,7 @@ public class RoleService : IRoleService
     };
 
     var result = await _roleManager.CreateAsync(role);
-
-    if (!result.Succeeded)
-    {
-      throw new BusinessException(result.Errors.First().Description);
-    }
+    IdentityResultHelper.Check(result);
 
     return $"{name} isimli rol eklendi.";
   }
@@ -47,11 +43,7 @@ public class RoleService : IRoleService
     _roleBusinessRules.EnsureUserExist(user);
 
     var addRoleToUser = await _userManager.AddToRoleAsync(user, request.RoleName);
-
-    if (!addRoleToUser.Succeeded)
-    {
-      throw new BusinessException(addRoleToUser.Errors.First().Description);
-    }
+    IdentityResultHelper.Check(addRoleToUser);
 
     return $"Kullanıcıya {request.RoleName} isimli rol eklendi.";
   }

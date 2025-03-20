@@ -8,7 +8,7 @@ namespace SportsEcommerce.WebApi.Controllers;
 [ApiController]
 public class UsersController(IUserService _userService) : ControllerBase
 {
-  [HttpGet("email")]
+  [HttpGet("getByEmail")]
   [Authorize(Roles = "admin")]
   public async Task<IActionResult> GetByEmailAsync([FromQuery] string email)
   {

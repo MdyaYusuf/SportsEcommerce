@@ -1,4 +1,4 @@
-import { CircularProgress, Container, CssBaseline } from "@mui/material";
+﻿import { CircularProgress, Container, CssBaseline } from "@mui/material";
 import { Outlet } from "react-router";
 import Header from "./Header";
 import { ToastContainer } from "react-toastify";
@@ -18,7 +18,7 @@ function App() {
       .then(cart => dispatch(setCart(cart)))
       .catch(error => console.log(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [dispatch]);
 
   if (loading) return <CircularProgress />
 

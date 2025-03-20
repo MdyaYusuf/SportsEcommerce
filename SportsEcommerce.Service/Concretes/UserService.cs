@@ -1,4 +1,5 @@
 ﻿using Core.Exceptions;
+using Core.Utils;
 using Microsoft.AspNetCore.Identity;
 using SportsEcommerce.Models.Dtos.Users.Requests;
 using SportsEcommerce.Models.Entities;
@@ -24,7 +25,7 @@ public sealed class UserService : IUserService
 
     var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
 
-    CheckForIdentityResult(result);
+    IdentityResultHelper.Check(result);
 
     return user;
   }
@@ -35,7 +36,7 @@ public sealed class UserService : IUserService
 
     var result = await _userManager.DeleteAsync(user);
 
-    CheckForIdentityResult(result);
+    IdentityResultHelper.Check(result);
 
     return "Kullanıcı silindi.";
   }
@@ -75,12 +76,10 @@ public sealed class UserService : IUserService
     };
 
     var result = await _userManager.CreateAsync(user, request.Password);
-
-    CheckForIdentityResult(result);
+    IdentityResultHelper.Check(result);
 
     var addRole = await _userManager.AddToRoleAsync(user, "user");
-
-    CheckForIdentityResult(result);
+    IdentityResultHelper.Check(addRole);
 
     return user;
   }
@@ -96,16 +95,8 @@ public sealed class UserService : IUserService
     user.City = request.City;
 
     var result = await _userManager.UpdateAsync(user);
-    CheckForIdentityResult(result);
+    IdentityResultHelper.Check(result);
 
     return user;
-  }
-
-  private void CheckForIdentityResult(IdentityResult result)
-  {
-    if (!result.Succeeded)
-    {
-      throw new BusinessException(result.Errors.ToList().First().Description);
-    }
   }
 }

@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+﻿import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { IApiError } from "../model/IApiError";
 import { router } from "../router/Routes";
@@ -49,7 +49,7 @@ const homePage = {
 }
 
 const Cart = {
-  get: () => queries.get("cart"),
+  get: () => queries.get("cart/get"),
   addItem: (productId: string, quantity: number = 1) => queries.post(`cart/add?productId=${productId}&quantity=${quantity}`, {}),
   removeItem: (productId: string, quantity: number = 1) => queries.delete(`cart/remove?productId=${productId}&quantity=${quantity}`),
   clearItems: () => queries.post("cart/clear", {})
