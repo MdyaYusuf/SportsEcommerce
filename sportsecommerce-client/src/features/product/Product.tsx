@@ -1,13 +1,12 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
-import { IProduct } from "../model/IProduct";
+﻿import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
+import { IProduct } from "../../model/IProduct";
 import { AddShoppingCart } from "@mui/icons-material";
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from "react-router";
-import requests from "../api/requests";
-import { useState } from "react";
-import { useCartContext } from "../contexts/CartContext";
+import { currencyTRY } from "../../utils/formatCurrency";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { addItemToCart } from "../../features/cart/cartSlice";
 import { toast } from "react-toastify";
-import { currencyTRY } from "../utils/formatCurrency";
 
 interface Props {
   product: IProduct;
@@ -15,21 +14,8 @@ interface Props {
 
 export default function Product({ product }: Props) {
 
-  const [loading, setLoading] = useState(false);
-  const { setCart } = useCartContext();
-
-  function handleAddItem(productId: string) {
-
-    setLoading(true);
-
-    requests.Cart.addItem(productId)
-      .then(cart => {
-        setCart(cart);
-        toast.success("Sepetinize eklendi.");
-      })
-      .catch(error => console.log(error))
-      .finally(() => setLoading(false));
-  }
+  const { status } = useAppSelector(state => state.cart);
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -44,7 +30,12 @@ export default function Product({ product }: Props) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button variant="outlined" size="small" loadingPosition="start" startIcon={<AddShoppingCart />} color="success" loading={loading} onClick={() => handleAddItem(product.id)}>Add to Cart</Button>
+          <Button variant="outlined" size="small" loadingPosition="start" startIcon={<AddShoppingCart />} color="success" loading={status === "pendingAddItem" + product.id} onClick={() => {
+            dispatch(addItemToCart({ productId: product.id }))
+              .unwrap()
+              .then(() => toast.success("Ürün sepete eklendi."))
+              .catch(() => {});
+          }}>Add to Cart</Button>
           <Button component={Link} to={`/${product.id}`} size="small" startIcon={<SearchIcon />} color="primary">View</Button>
         </CardActions>
       </Card>
