@@ -1,6 +1,4 @@
-﻿using Core.Entities;
-
-namespace SportsEcommerce.Models.Entities;
+﻿namespace SportsEcommerce.Models.Entities;
 
 public class Order
 {

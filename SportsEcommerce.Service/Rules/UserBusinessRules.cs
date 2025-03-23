@@ -30,6 +30,28 @@ public class UserBusinessRules(UserManager<User> _userManager)
     return user;
   }
 
+  public async Task<User> EnsureUserExistsByUsernameAsync(string username)
+  {
+    var user = await _userManager.FindByNameAsync(username);
+
+    if (user == null)
+    {
+      throw new NotFoundException("Kullanıcı bulunamadı.");
+    }
+
+    return user;
+  }
+
+  public async Task CheckUserPasswordAsync(User user, string password)
+  {
+    bool checkPassword = await _userManager.CheckPasswordAsync(user, password);
+
+    if (!checkPassword)
+    {
+      throw new BusinessException("Parolanız yanlış.");
+    }
+  }
+
   public void EnsurePasswordsMatch(string newPassword, string confirmNewPassword)
   {
     if (!newPassword.Equals(confirmNewPassword))

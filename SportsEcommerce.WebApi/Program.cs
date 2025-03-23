@@ -1,8 +1,8 @@
-using Core.Tokens.Configurations;
-using Core.Tokens.Services;
+﻿using Core.Tokens.Configurations;
 using FocusList.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using SportsEcommerce.DataAccess.Contexts;
 using SportsEcommerce.DataAccess.Extensions;
 using SportsEcommerce.Models.Entities;
@@ -39,18 +39,24 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddDataAccessDependencies(builder.Configuration);
 builder.Services.AddServiceDependencies();
 
-builder.Services.AddScoped<DecoderService>();
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<CartSessionHelper>();
 
 builder.Services.Configure<TokenOption>(builder.Configuration.GetSection("TokenOption"));
 
 builder.Services.AddIdentity<User, IdentityRole>(opt =>
 {
+  opt.User.AllowedUserNameCharacters =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
   opt.User.RequireUniqueEmail = true;
-  opt.Password.RequireNonAlphanumeric = true;
+  opt.Password.RequireNonAlphanumeric = false;
   opt.Password.RequireDigit = true;
+  opt.Password.RequireLowercase = true;
+  opt.Password.RequireUppercase = true;
   opt.Password.RequiredLength = 6;
+
+  opt.Lockout.MaxFailedAccessAttempts = 5;
+  opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+  opt.Lockout.AllowedForNewUsers = true;
 }).AddEntityFrameworkStores<BaseDbContext>();
 
 var tokenOption = builder.Configuration.GetSection("TokenOption").Get<TokenOption>();
@@ -61,14 +67,15 @@ builder.Services.AddAuthentication(opt =>
   opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>
 {
-  opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+  opt.TokenValidationParameters = new TokenValidationParameters()
   {
     ValidateIssuer = true,
     ValidateAudience = true,
     ValidateIssuerSigningKey = true,
     ValidIssuer = tokenOption.Issuer,
     ValidAudience = tokenOption.Audience[0],
-    IssuerSigningKey = SecurityKeyHelper.GetSecurityKey(tokenOption.SecurityKey)
+    IssuerSigningKey = SecurityKeyHelper.GetSecurityKey(tokenOption.SecurityKey),
+    ValidateLifetime = true
   };
 });
 

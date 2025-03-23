@@ -6,12 +6,13 @@ namespace SportsEcommerce.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthenticationController(IAuthenticationService _authenticationService) : ControllerBase
+public class AuthenticationController(IAuthenticationService _authenticationService) : CustomBaseController
 {
   [HttpPost("login")]
   public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request)
   {
     var result = await _authenticationService.LoginAsync(request);
+
     return Ok(result);
   }
 
@@ -19,6 +20,7 @@ public class AuthenticationController(IAuthenticationService _authenticationServ
   public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
   {
     var result = await _authenticationService.RegisterAsync(request);
+
     return Ok(result);
   }
 }

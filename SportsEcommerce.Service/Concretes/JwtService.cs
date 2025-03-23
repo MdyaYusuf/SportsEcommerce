@@ -49,8 +49,8 @@ public class JwtService : IJwtService
     var claims = new List<Claim>()
     {
       new Claim(ClaimTypes.NameIdentifier, user.Id),
-      new Claim("email", user.Email),
-      new Claim(ClaimTypes.Name, user.UserName)
+      new Claim("email", user.Email!),
+      new Claim(ClaimTypes.Name, user.UserName!)
     };
 
     var roles = await _userManager.GetRolesAsync(user);

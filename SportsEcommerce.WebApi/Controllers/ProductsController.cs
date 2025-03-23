@@ -6,12 +6,13 @@ namespace SportsEcommerce.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProductsController(IProductService _productService) : ControllerBase
+public class ProductsController(IProductService _productService) : CustomBaseController
 {
   [HttpGet("getall")]
   public async Task<IActionResult> GetAllAsync()
   {
     var result = await _productService.GetAllAsync();
+
     return Ok(result);
   }
 
@@ -19,6 +20,7 @@ public class ProductsController(IProductService _productService) : ControllerBas
   public async Task<IActionResult> AddAsync([FromBody] CreateProductRequest request)
   {
     var result = await _productService.AddAsync(request);
+
     return Ok(result);
   }
 
@@ -26,6 +28,7 @@ public class ProductsController(IProductService _productService) : ControllerBas
   public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
   {
     var result = await _productService.GetByIdAsync(id);
+
     return Ok(result);
   }
 
@@ -33,6 +36,7 @@ public class ProductsController(IProductService _productService) : ControllerBas
   public async Task<IActionResult> DeleteAsync([FromQuery] Guid id)
   {
     var result = await _productService.RemoveAsync(id);
+
     return Ok(result);
   }
 
@@ -40,6 +44,7 @@ public class ProductsController(IProductService _productService) : ControllerBas
   public async Task<IActionResult> UpdateAsync([FromBody] UpdateProductRequest request)
   {
     var result = await _productService.UpdateAsync(request);
+
     return Ok(result);
   }
 }

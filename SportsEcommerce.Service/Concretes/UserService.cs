@@ -8,63 +8,25 @@ using SportsEcommerce.Service.Rules;
 
 namespace SportsEcommerce.Service.Concretes;
 
-public sealed class UserService : IUserService
+public sealed class UserService(UserManager<User> _userManager, UserBusinessRules _businessRules) : IUserService
 {
-  private readonly UserManager<User> _userManager;
-  private readonly UserBusinessRules _userBusinessRules;
-  public UserService(UserManager<User> userManager, UserBusinessRules userBusinessRules)
+  public async Task<User> GetByUsernameAsync(string username)
   {
-    _userManager = userManager;
-    _userBusinessRules = userBusinessRules;
-  }
-
-  public async Task<User> ChangePasswordAsync(string id, ChangePasswordRequest request)
-  {
-    var user = await _userBusinessRules.EnsureUserExistsAsync(id);
-    _userBusinessRules.EnsurePasswordsMatch(request.NewPassword, request.ConfirmNewPassword);
-
-    var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
-
-    IdentityResultHelper.Check(result);
+    var user = await _businessRules.EnsureUserExistsByUsernameAsync(username);
 
     return user;
-  }
-
-  public async Task<string> DeleteAsync(string id)
-  {
-    var user = await _userBusinessRules.EnsureUserExistsAsync(id);
-
-    var result = await _userManager.DeleteAsync(user);
-
-    IdentityResultHelper.Check(result);
-
-    return "Kullanıcı silindi.";
   }
 
   public async Task<User> GetByEmailAsync(string email)
   {
-    var user = await _userBusinessRules.EnsureUserExistsByEmailAsync(email);
-
-    return user;
-  }
-
-  public async Task<User> LoginAsync(LoginRequest request)
-  {
-    var user = await _userBusinessRules.EnsureUserExistsByEmailAsync(request.Email);
-
-    bool checkPassword = await _userManager.CheckPasswordAsync(user, request.Password);
-
-    if (checkPassword == false)
-    {
-      throw new BusinessException("Parolanız yanlış.");
-    }
+    var user = await _businessRules.EnsureUserExistsByEmailAsync(email);
 
     return user;
   }
 
   public async Task<User> RegisterAsync(RegisterRequest request)
   {
-    await _userBusinessRules.IsUsernameUniqueAsync(request.Username);
+    await _businessRules.IsUsernameUniqueAsync(request.Username);
 
     User user = new User
     {
@@ -78,16 +40,36 @@ public sealed class UserService : IUserService
     var result = await _userManager.CreateAsync(user, request.Password);
     IdentityResultHelper.Check(result);
 
-    var addRole = await _userManager.AddToRoleAsync(user, "user");
+    var addRole = await _userManager.AddToRoleAsync(user, "Customer");
     IdentityResultHelper.Check(addRole);
+
+    return user;
+  }
+
+  public async Task<User> LoginAsync(LoginRequest request)
+  {
+    var user = await _businessRules.EnsureUserExistsByEmailAsync(request.Email);
+
+    await _businessRules.CheckUserPasswordAsync(user, request.Password);
+
+    return user;
+  }
+
+  public async Task<User> ChangePasswordAsync(string id, ChangePasswordRequest request)
+  {
+    var user = await _businessRules.EnsureUserExistsAsync(id);
+    _businessRules.EnsurePasswordsMatch(request.NewPassword, request.ConfirmNewPassword);
+
+    var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+    IdentityResultHelper.Check(result);
 
     return user;
   }
 
   public async Task<User> UpdateAsync(string id, UserUpdateRequest request)
   {
-    var user = await _userBusinessRules.EnsureUserExistsAsync(id);
-    await _userBusinessRules.IsUsernameUniqueAsync(request.Username);
+    var user = await _businessRules.EnsureUserExistsAsync(id);
+    await _businessRules.IsUsernameUniqueAsync(request.Username);
 
     user.UserName = request.Username;
     user.FirstName = request.FirstName;
@@ -98,5 +80,16 @@ public sealed class UserService : IUserService
     IdentityResultHelper.Check(result);
 
     return user;
+  }
+
+  public async Task<string> DeleteAsync(string id)
+  {
+    var user = await _businessRules.EnsureUserExistsAsync(id);
+
+    var result = await _userManager.DeleteAsync(user);
+
+    IdentityResultHelper.Check(result);
+
+    return "Kullanıcı silindi.";
   }
 }

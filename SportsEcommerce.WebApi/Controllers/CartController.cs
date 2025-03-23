@@ -9,7 +9,7 @@ namespace SportsEcommerce.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CartController(ICartService _cartService, IProductService _productService, IMapper _mapper, CartSessionHelper _helper) : ControllerBase
+public class CartController(ICartService _cartService, IProductService _productService, IMapper _mapper, CartSessionHelper _helper) : CustomBaseController
 {
   [HttpGet("get")]
   public IActionResult GetCart()
