@@ -1,4 +1,4 @@
-export interface IApiError
+﻿export interface IApiError
 {
   Success: boolean,
   Message: string,

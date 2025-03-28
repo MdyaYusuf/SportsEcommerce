@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Cart } from "../../model/ICart";
+﻿import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ICart } from "../../model/ICart";
 import requests from "../../api/requests";
 
 
 export interface CartState {
-  cart: Cart | null,
+  cart: ICart | null,
   status: string
 }
 
@@ -13,14 +13,14 @@ const initialState: CartState = {
   status: "idle"
 }
 
-export const addItemToCart = createAsyncThunk<Cart, { productId: string, quantity?: number }>(
+export const addItemToCart = createAsyncThunk<ICart, { productId: string, quantity?: number }>(
   "cart/addItemToCart",
   async ({ productId, quantity = 1 }) => {
     return await requests.Cart.addItem(productId, quantity);
   }
 );
 
-export const removeItemFromCart = createAsyncThunk<Cart, { productId: string, quantity?: number, key?: string }>(
+export const removeItemFromCart = createAsyncThunk<ICart, { productId: string, quantity?: number, key?: string }>(
   "cart/removeItemFromCart",
   async ({ productId, quantity = 1 }) => {
     return await requests.Cart.removeItem(productId, quantity);

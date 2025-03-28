@@ -8,6 +8,7 @@ using SportsEcommerce.DataAccess.Extensions;
 using SportsEcommerce.Models.Entities;
 using SportsEcommerce.Service.Extensions;
 using SportsEcommerce.WebApi.Helpers;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,10 +73,11 @@ builder.Services.AddAuthentication(opt =>
     ValidateIssuer = true,
     ValidateAudience = true,
     ValidateIssuerSigningKey = true,
+    ValidateLifetime = true,
     ValidIssuer = tokenOption.Issuer,
     ValidAudience = tokenOption.Audience[0],
     IssuerSigningKey = SecurityKeyHelper.GetSecurityKey(tokenOption.SecurityKey),
-    ValidateLifetime = true
+    RoleClaimType = ClaimTypes.Role
   };
 });
 

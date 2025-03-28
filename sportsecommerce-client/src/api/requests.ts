@@ -1,6 +1,8 @@
 ﻿import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { IApiError } from "../model/IApiError";
+import { ILoginRequest } from "../model/ILoginRequest";
+import { IRegisterRequest } from "../model/IRegisterRequest";
 import { router } from "../router/Routes";
 
 axios.defaults.baseURL = "http://localhost:5110/api/";
@@ -9,13 +11,16 @@ axios.defaults.withCredentials = true;
 axios.interceptors.response.use(response => {
   return response;
 }, (error: AxiosError) => {
+
   if (!error.response) {
     toast.error("Server cevap vermiyor.");
     return Promise.reject(error);
   }
+
   const { data, status } = error.response as AxiosResponse;
   const apiError = data as IApiError;
   const errorMessage = apiError?.Message ?? "Bilinmeyen bir hata meydana geldi.";
+
   switch (status)
   {
     case 400:
@@ -55,8 +60,13 @@ const Cart = {
   clearItems: () => queries.post("cart/clear", {})
 }
 
+const Authentication = {
+  login: (formData: ILoginRequest) => queries.post("authentication/login", formData),
+  register: (formData: IRegisterRequest) => queries.post("authentication/register", formData)
+}
+
 const requests = {
-  homePage, Cart
+  homePage, Cart, Authentication
 }
 
 export default requests

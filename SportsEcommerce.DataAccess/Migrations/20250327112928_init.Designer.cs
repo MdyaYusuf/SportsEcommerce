@@ -12,7 +12,7 @@ using SportsEcommerce.DataAccess.Contexts;
 namespace SportsEcommerce.DataAccess.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20250316113436_init")]
+    [Migration("20250327112928_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -287,7 +287,7 @@ namespace SportsEcommerce.DataAccess.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("City")

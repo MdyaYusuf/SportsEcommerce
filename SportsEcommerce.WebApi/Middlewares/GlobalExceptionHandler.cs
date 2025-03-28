@@ -24,24 +24,24 @@ public class GlobalExceptionHandler : IExceptionHandler
       return true;
     }
 
-    if (exception.GetType() == typeof(BusinessException))
-    {
-      httpContext.Response.StatusCode = 400;
-      Errors.Success = false;
-      Errors.Message = exception.Message;
-      Errors.StatusCode = 400;
-
-      await httpContext.Response.WriteAsync(JsonSerializer.Serialize(Errors));
-
-      return true;
-    }
-
     if (exception.GetType() == typeof(AuthorizationException))
     {
       httpContext.Response.StatusCode = 401;
       Errors.Success = false;
       Errors.Message = exception.Message;
       Errors.StatusCode = 401;
+
+      await httpContext.Response.WriteAsync(JsonSerializer.Serialize(Errors));
+
+      return true;
+    }
+
+    if (exception.GetType() == typeof(BusinessException))
+    {
+      httpContext.Response.StatusCode = 400;
+      Errors.Success = false;
+      Errors.Message = exception.Message;
+      Errors.StatusCode = 400;
 
       await httpContext.Response.WriteAsync(JsonSerializer.Serialize(Errors));
 

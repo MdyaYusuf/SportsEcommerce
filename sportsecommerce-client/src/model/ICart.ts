@@ -1,9 +1,9 @@
-export interface Cart
+﻿export interface ICart
 {
-  cartItems: CartItem[];
+  cartItems: ICartItem[];
 }
 
-export interface CartItem
+export interface ICartItem
 {
   productId: string,
   productName: string,

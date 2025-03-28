@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+﻿import { configureStore } from "@reduxjs/toolkit";
 import { cartSlice } from "../features/cart/cartSlice";
 import { productSlice } from "../features/product/productSlice";
 

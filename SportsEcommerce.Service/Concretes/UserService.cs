@@ -1,5 +1,4 @@
-﻿using Core.Exceptions;
-using Core.Utils;
+﻿using Core.Utils;
 using Microsoft.AspNetCore.Identity;
 using SportsEcommerce.Models.Dtos.Users.Requests;
 using SportsEcommerce.Models.Entities;

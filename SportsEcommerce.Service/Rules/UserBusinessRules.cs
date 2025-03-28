@@ -24,7 +24,7 @@ public class UserBusinessRules(UserManager<User> _userManager)
 
     if (user == null)
     {
-      throw new NotFoundException("Kullanıcı bulunamadı.");
+      throw new AuthorizationException("Giriş bilgileriniz yanlış.");
     }
 
     return user;
@@ -48,7 +48,7 @@ public class UserBusinessRules(UserManager<User> _userManager)
 
     if (!checkPassword)
     {
-      throw new BusinessException("Parolanız yanlış.");
+      throw new AuthorizationException("Giriş bilgileriniz yanlış.");
     }
   }
 
