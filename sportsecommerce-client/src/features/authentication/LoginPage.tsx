@@ -1,10 +1,15 @@
 ﻿import { LockOutlined } from "@mui/icons-material";
 import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
-import requests from "../../api/requests";
 import { useForm } from "react-hook-form";
 import { ILoginRequest } from "../../model/ILoginRequest";
+import { useAppDispatch } from "../../hooks/hooks";
+import { useNavigate } from "react-router";
+import { loginUser } from "./authenticationSlice";
 
 export default function LoginPage() {
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<ILoginRequest>({
     defaultValues: {
@@ -14,7 +19,8 @@ export default function LoginPage() {
   });
 
   async function submitForm(data: ILoginRequest) {
-    await requests.Authentication.login(data);
+    await dispatch(loginUser(data));
+    navigate("/");
   }
 
   return (

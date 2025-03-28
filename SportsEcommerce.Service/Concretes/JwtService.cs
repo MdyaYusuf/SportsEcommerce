@@ -40,7 +40,8 @@ public class JwtService : IJwtService
     return new TokenResponseDto()
     {
       AccessToken = token,
-      AccessTokenExpiration = accessTokenExpiration
+      AccessTokenExpiration = accessTokenExpiration,
+      Username = user.UserName!
     };
   }
 
